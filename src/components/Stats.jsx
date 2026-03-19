@@ -1,31 +1,33 @@
 import Avatar from "./Avatar.jsx";
-import {useContext} from "react";
-import {ShmitterContext} from "../utils/context.js";
+import {useDispatch, useSelector} from "react-redux";
+import {changeStats} from "../actions/statsActions.js";
 
 const Stats = () => {
-    const {user, stats, changeStats} = useContext(ShmitterContext);
+    const {name} = useSelector(state => state.user);
+    const {followers, following} = useSelector(state => state.stats);
+    const dispatch = useDispatch();
 
     return (
         <div className={'user-stats'}>
             <div>
                 <Avatar/>
-                {user.name}
+                {name}
             </div>
             <div className={'stats'}>
                 <div
-                    onClick={() => changeStats('followers', 1)}
+                    onClick={() => dispatch(changeStats('followers', 1))}
                     onContextMenu={(e) => {
                         e.preventDefault();
-                        changeStats('followers', -1);
+                        dispatch(changeStats('followers', -1));
                     }}
-                >Followers: {stats.followers}</div>
+                >Followers: {followers}</div>
                 <div
-                    onClick={() => changeStats('following', 1)}
+                    onClick={() => dispatch(changeStats('following', 1))}
                     onContextMenu={(e) => {
                         e.preventDefault();
-                        changeStats('following', -1);
+                        dispatch(changeStats('following', -1));
                     }}
-                >Following: {stats.following}</div>
+                >Following: {following}</div>
             </div>
         </div>
     )
